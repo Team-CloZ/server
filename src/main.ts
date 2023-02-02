@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from '@/app.module';
+import customCss from './customCss';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,7 +13,7 @@ async function bootstrap() {
     new DocumentBuilder().setTitle('CloZ API').setVersion('0.1').build(),
   );
   const options = {
-    customCss: '.swagger-ui .topbar { display: none }',
+    customCss,
   };
   SwaggerModule.setup('docs', app, document, options);
 
