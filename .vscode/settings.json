@@ -3,5 +3,10 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.fixAll.format": true
+  },
+  "files.exclude": {
+    "temp": true,
+    "node_modules": true,
+    "dist": true
   }
 }
