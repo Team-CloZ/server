@@ -1,17 +1,19 @@
 import { UserRepository } from '@/repository';
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, Min } from 'class-validator';
 @Entity({ customRepository: () => UserRepository })
 export class User {
   @ApiProperty()
-  @IsNumber()
   @PrimaryKey()
+  @Type(() => Number)
+  @Min(1)
   readonly id!: number;
 
   @ApiProperty()
-  @IsString()
   @Property()
+  @IsString()
   readonly name!: string;
 
   @ApiProperty({ type: Date })

@@ -8,6 +8,8 @@ async function bootstrap() {
 
   app.enableCors();
 
+  // app.setGlobalPrefix('api');
+
   const document = SwaggerModule.createDocument(
     app,
     new DocumentBuilder().setTitle('CloZ API').setVersion('0.1').build(),

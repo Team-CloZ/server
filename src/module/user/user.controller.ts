@@ -1,8 +1,12 @@
-import { User } from '@/entity';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { PostUserReqDto, PostUserResDto } from './dto';
+import {
+  GetUserParamsDto,
+  GetUserResDto,
+  PostUserReqDto,
+  PostUserResDto,
+} from './dto';
 import { UserService } from './user.service';
 
 @ApiTags('users')
@@ -19,5 +23,16 @@ export class UserController {
     const user = await this.userService.postUser(postUserReqDto);
 
     return plainToInstance(PostUserResDto, user);
+  }
+
+  @ApiOperation({ summary: '유저 조회' })
+  @ApiOkResponse({ type: GetUserResDto })
+  @Get(':id')
+  async getUser(
+    @Param() getUserParamsDto: GetUserParamsDto,
+  ): Promise<GetUserResDto> {
+    const user = await this.userService.getUser(getUserParamsDto);
+
+    return plainToInstance(GetUserResDto, user);
   }
 }
