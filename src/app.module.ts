@@ -3,12 +3,17 @@ import {
   Module,
   ValidationPipe,
 } from '@nestjs/common';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { UserModule } from './module/user/user.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [MikroOrmModule.forRoot(), UserModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    UserModule,
+  ],
   providers: [
     {
       provide: APP_INTERCEPTOR,

@@ -1,23 +1,27 @@
-import { UserRepository } from '@/repository';
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsString, Min } from 'class-validator';
-@Entity({ customRepository: () => UserRepository })
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+@Entity()
 export class User {
   @ApiProperty()
-  @PrimaryKey()
+  @PrimaryGeneratedColumn()
   @Type(() => Number)
   @Min(1)
   readonly id!: number;
 
   @ApiProperty()
-  @Property()
+  @Column()
   @IsString()
   readonly name!: string;
 
   @ApiProperty({ type: Date })
-  @Property()
+  @CreateDateColumn()
   readonly createdAt = new Date();
 
   constructor(partial: Partial<User>) {

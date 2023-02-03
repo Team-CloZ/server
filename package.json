@@ -17,27 +17,22 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "db:put": "mikro-orm schema:update --run",
-    "db:drop": "mikro-orm schema:drop --run"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@mikro-orm/core": "^5.6.8",
-    "@mikro-orm/mysql": "^5.6.8",
-    "@mikro-orm/nestjs": "^5.1.6",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.3.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.1.4",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "mysql2": "^3.1.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "typeorm": "^0.3.11"
   },
   "devDependencies": {
-    "@mikro-orm/cli": "^5.6.8",
-    "@mikro-orm/reflection": "^5.6.8",
-    "@mikro-orm/sql-highlighter": "^1.0.1",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
@@ -77,12 +72,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "mikro-orm": {
-    "useTsNode": true,
-    "configPaths": [
-      "./src/mikro-orm.config.ts",
-      "./dist/mikro-orm.config.js"
-    ]
   }
 }

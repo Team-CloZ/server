@@ -1,12 +1,20 @@
 import { User } from '@/entity';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
+import { DataSource } from 'typeorm';
+import { DatabaseModule } from './database/database.module';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([User])],
+  imports: [DatabaseModule],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [
+    UserService,
+    {
+      provide: 'USER_REPOSITORY',
+      useFactory: (dataSource: DataSource) => dataSource.getRepository(User),
+      inject: ['DATA_SOURCE'],
+    },
+  ],
 })
 export class UserModule {}
