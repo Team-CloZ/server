@@ -1,5 +1,12 @@
 import { PostRepository } from '@/repository';
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsNumber, IsString, Min } from 'class-validator';
@@ -38,6 +45,10 @@ export class Post {
   @IsString()
   readonly caption?: string;
 
+  @ApiProperty({ default: 0 })
+  @Property()
+  readonly likeCount: number = 0;
+
   @ApiProperty({ type: Date })
   @Property()
   readonly createdAt = new Date();
@@ -63,4 +74,7 @@ export class Post {
   @Property({ persist: false })
   @IsNumber()
   readonly parentId?: number;
+
+  // @OneToMany(() => Post, (post) => post.parent)
+  // children = new Collection<Post>(this);
 }

@@ -1,7 +1,18 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiProperty,
+  ApiTags,
+} from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { PostPostReqDto, PostPostResDto } from './dto';
+import {
+  GetPostsResElementDto,
+  GetPostsResQueryDto,
+  PostPostReqDto,
+  PostPostResDto,
+} from './dto';
 import { PostService } from './post.service';
 
 @ApiTags('posts')
@@ -18,5 +29,16 @@ export class PostController {
     const post = await this.postService.PostPost(postPostReqDto);
 
     return plainToInstance(PostPostResDto, post);
+  }
+
+  @ApiOperation({ summary: '게시글 목록 조회' })
+  @ApiOkResponse({ type: [GetPostsResElementDto] })
+  @Get()
+  async GetPosts(
+    @Query() getPostsResQueryDto: GetPostsResQueryDto,
+  ): Promise<GetPostsResElementDto[]> {
+    const posts = await this.postService.GetPosts(getPostsResQueryDto);
+
+    return plainToInstance(GetPostsResElementDto, posts);
   }
 }
