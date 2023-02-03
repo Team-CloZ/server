@@ -1,18 +1,15 @@
 import { User } from '@/entity';
 import { UserRepository } from '@/repository';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GetUserParamsDto, PostUserReqDto } from './dto';
 
 @Injectable()
 export class UserService {
-  logger = new Logger('UserService');
   constructor(private readonly userRepository: UserRepository) {}
 
   async postUser(postUserReqDto: PostUserReqDto): Promise<User> {
     try {
-      const newUser = new User({
-        name: postUserReqDto.name,
-      });
+      const newUser = new User(postUserReqDto);
 
       const id = await this.userRepository.insertUser(newUser);
 
@@ -20,7 +17,8 @@ export class UserService {
 
       return user;
     } catch (error) {
-      this.logger.error(error);
+      console.log(error);
+      throw error;
     }
   }
 
@@ -32,7 +30,8 @@ export class UserService {
 
       return user;
     } catch (error) {
-      this.logger.error(error);
+      console.log(error);
+      throw error;
     }
   }
 }

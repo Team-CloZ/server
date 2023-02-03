@@ -1,5 +1,10 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import {
   GetUserParamsDto,
@@ -15,7 +20,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: '유저 생성' })
-  @ApiOkResponse({ type: PostUserResDto })
+  @ApiCreatedResponse({ type: PostUserResDto })
   @Post()
   async postUser(
     @Body() postUserReqDto: PostUserReqDto,
