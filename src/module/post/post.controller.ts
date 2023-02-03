@@ -17,7 +17,6 @@ import {
   PostPostResDto,
   CheckLikeByPostIdAndUserIdResDto,
   CheckLikeByPostIdAndUserIdReqQueryDto,
-  PostLikeByPostIdResDto,
   PostLikeByPostIdReqBodyDto,
 } from './dto';
 import { PostService } from './post.service';
