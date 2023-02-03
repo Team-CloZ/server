@@ -1,4 +1,4 @@
-import { User } from '@/entity';
+import { User } from '../../entity';
 import { Module } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { DatabaseModule } from './database/database.module';

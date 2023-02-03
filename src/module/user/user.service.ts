@@ -1,4 +1,4 @@
-import { User } from '@/entity';
+import { User } from '../../entity';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { GetUserParamsDto, PostUserReqDto } from './dto';

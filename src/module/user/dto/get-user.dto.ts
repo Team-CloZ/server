@@ -1,4 +1,4 @@
-import { User } from '@/entity';
+import { User } from '../../../entity';
 import { PickType } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 

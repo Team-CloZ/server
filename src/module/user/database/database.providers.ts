@@ -1,4 +1,4 @@
-import { User } from '@/entity';
+import { User } from '../../../entity';
 import { DataSource } from 'typeorm';
 
 export const databaseProviders = [
