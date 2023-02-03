@@ -79,4 +79,18 @@ export class PostRepository extends EntityRepository<Post> {
 
     await qb.execute();
   }
+
+  async selectUserLikeCountById(id: number): Promise<number> {
+    let likeCount = 0;
+
+    const qb = this.qb().select('like_count').where({ userId: id });
+
+    const posts = await qb.execute();
+
+    posts.forEach((post) => {
+      likeCount += post.likeCount;
+    });
+
+    return likeCount;
+  }
 }
