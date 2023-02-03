@@ -54,4 +54,15 @@ export class PostRepository extends EntityRepository<Post> {
 
     return posts;
   }
+
+  async selectChildrenByPostId(postId: number): Promise<Post[]> {
+    const qb = this.qb()
+      .select('*')
+      .where({ parentId: postId })
+      .orderBy({ id: 'DESC' });
+
+    const posts = await qb.execute();
+
+    return posts;
+  }
 }

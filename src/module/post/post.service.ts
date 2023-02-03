@@ -1,12 +1,10 @@
 import { Post } from '@/entity';
 import { PostRepository, UserRepository } from '@/repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
 import {
-  GetPostResUserDto,
   GetPostsResQueryDto,
   PostPostReqDto,
-  PostPostReqParamDto,
+  GetPostByIdReqParamDto,
 } from './dto';
 
 @Injectable()
@@ -73,14 +71,16 @@ export class PostService {
     }
   }
 
-  async getPostById(postPostReqParamDto: PostPostReqParamDto): Promise<Post> {
+  async getPostById(
+    getPostByIdReqParamDto: GetPostByIdReqParamDto,
+  ): Promise<Post> {
     try {
       const post = await this.postRepository.selectPostById(
-        postPostReqParamDto.id,
+        getPostByIdReqParamDto.id,
       );
       if (!post) {
         throw new NotFoundException(
-          `${postPostReqParamDto.id}번 게시글이 존재하지 않습니다.`,
+          `${getPostByIdReqParamDto.id}번 게시글이 존재하지 않습니다.`,
         );
       }
 
@@ -95,6 +95,30 @@ export class PostService {
         user,
         parent,
       };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async getChildrenByPostId(
+    getPostByIdReqParamDto: GetPostByIdReqParamDto,
+  ): Promise<Post[]> {
+    try {
+      const post = await this.postRepository.selectPostById(
+        getPostByIdReqParamDto.id,
+      );
+      if (!post) {
+        throw new NotFoundException(
+          `${getPostByIdReqParamDto.id}번 게시글이 존재하지 않습니다.`,
+        );
+      }
+
+      const children = await this.postRepository.selectChildrenByPostId(
+        getPostByIdReqParamDto.id,
+      );
+
+      return children;
     } catch (error) {
       console.log(error);
       throw error;

@@ -7,13 +7,13 @@ import {
 } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import {
-  GetPostResDto,
-  GetPostResParentDto,
-  GetPostResUserDto,
+  GetPostByIdResDto,
+  GetPostByIdResParentDto,
+  GetPostByIdResUserDto,
   GetPostsResElementDto,
   GetPostsResQueryDto,
   PostPostReqDto,
-  PostPostReqParamDto,
+  GetPostByIdReqParamDto,
   PostPostResDto,
 } from './dto';
 import { PostService } from './post.service';
@@ -46,17 +46,30 @@ export class PostController {
   }
 
   @ApiOperation({ summary: '게시글 조회' })
-  @ApiOkResponse({ type: GetPostResDto }) // 지워보기
+  @ApiOkResponse({ type: GetPostByIdResDto })
   @Get(':id')
-  async getPost(
-    @Param() postPostReqParamDto: PostPostReqParamDto,
-  ): Promise<GetPostResDto> {
-    const post = await this.postService.getPostById(postPostReqParamDto);
+  async getPostById(
+    @Param() getPostByIdReqParamDto: GetPostByIdReqParamDto,
+  ): Promise<GetPostByIdResDto> {
+    const post = await this.postService.getPostById(getPostByIdReqParamDto);
 
-    return plainToInstance(GetPostResDto, {
+    return plainToInstance(GetPostByIdResDto, {
       ...post,
-      user: plainToInstance(GetPostResUserDto, post.user),
-      parent: plainToInstance(GetPostResParentDto, post.parent),
+      user: plainToInstance(GetPostByIdResUserDto, post.user),
+      parent: plainToInstance(GetPostByIdResParentDto, post.parent),
     });
+  }
+
+  @ApiOperation({ summary: '게시글의 자식 게시글 조회' })
+  @ApiOkResponse({ type: [GetPostsResElementDto] })
+  @Get(':id/children')
+  async getChildrenByPostId(
+    @Param() getPostByIdReqParamDto: GetPostByIdReqParamDto,
+  ): Promise<GetPostsResElementDto[]> {
+    const posts = await this.postService.getChildrenByPostId(
+      getPostByIdReqParamDto,
+    );
+
+    return plainToInstance(GetPostsResElementDto, posts);
   }
 }

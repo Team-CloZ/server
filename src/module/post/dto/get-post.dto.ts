@@ -2,10 +2,10 @@ import { Post, User } from '@/entity';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-export class PostPostReqParamDto extends PickType(Post, ['id']) {}
+export class GetPostByIdReqParamDto extends PickType(Post, ['id']) {}
 
 @Exclude()
-export class GetPostResParentDto extends PickType(Post, [
+export class GetPostByIdResParentDto extends PickType(Post, [
   'id',
   'imageUrl',
   'title',
@@ -27,13 +27,13 @@ export class GetPostResParentDto extends PickType(Post, [
 }
 
 @Exclude()
-export class GetPostResUserDto extends PickType(User, ['id', 'name']) {
+export class GetPostByIdResUserDto extends PickType(User, ['id', 'name']) {
   @Expose() readonly id!: number;
   @Expose() readonly name!: string;
 }
 
 @Exclude()
-export class GetPostResDto extends PickType(Post, [
+export class GetPostByIdResDto extends PickType(Post, [
   'id',
   'imageUrl',
   'title',
@@ -56,9 +56,9 @@ export class GetPostResDto extends PickType(Post, [
 
   @ApiProperty()
   @Expose()
-  readonly parent?: GetPostResParentDto;
+  readonly parent?: GetPostByIdResParentDto;
 
   @ApiProperty()
   @Expose()
-  readonly user!: GetPostResUserDto;
+  readonly user!: GetPostByIdResUserDto;
 }
