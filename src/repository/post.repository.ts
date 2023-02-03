@@ -24,12 +24,8 @@ export class PostRepository extends EntityRepository<Post> {
   async selectPosts(getPostsResQueryDto: GetPostsResQueryDto): Promise<Post[]> {
     const qb = this.qb().select('*');
 
-    if (getPostsResQueryDto.userId) {
-      qb.andWhere({ userId: getPostsResQueryDto.userId });
-    }
-
     if (getPostsResQueryDto.search) {
-      qb.orWhere({
+      qb.andWhere({
         title: { $like: `%${getPostsResQueryDto.search.trim()}%` },
       });
       qb.orWhere({
@@ -38,6 +34,10 @@ export class PostRepository extends EntityRepository<Post> {
       qb.orWhere({
         desc: { $like: `%${getPostsResQueryDto.search.trim()}%` },
       });
+    }
+
+    if (getPostsResQueryDto.userId) {
+      qb.andWhere({ userId: getPostsResQueryDto.userId });
     }
 
     switch (getPostsResQueryDto.sortBy) {
@@ -64,5 +64,19 @@ export class PostRepository extends EntityRepository<Post> {
     const posts = await qb.execute();
 
     return posts;
+  }
+
+  async incrementLikeCountByPostId(id: number): Promise<void> {
+    const qb = this.qb();
+    qb.update({ likeCount: qb.raw('like_count + 1') }).where(id);
+
+    await qb.execute();
+  }
+
+  async decrementLikeCountByPostId(id: number): Promise<void> {
+    const qb = this.qb();
+    qb.update({ likeCount: qb.raw('like_count - 1') }).where(id);
+
+    await qb.execute();
   }
 }

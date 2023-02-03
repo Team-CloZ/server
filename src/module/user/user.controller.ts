@@ -9,7 +9,7 @@ import { plainToInstance } from 'class-transformer';
 import {
   GetUserReqParamsDto,
   GetUserResDto,
-  PostUserReqDto,
+  PostUserReqBodyDto,
   PostUserResDto,
 } from './dto';
 import { UserService } from './user.service';
@@ -23,9 +23,9 @@ export class UserController {
   @ApiCreatedResponse({ type: PostUserResDto })
   @Post()
   async postUser(
-    @Body() postUserReqDto: PostUserReqDto,
+    @Body() postUserReqBodyDto: PostUserReqBodyDto,
   ): Promise<PostUserResDto> {
-    const user = await this.userService.postUser(postUserReqDto);
+    const user = await this.userService.postUser(postUserReqBodyDto);
 
     return plainToInstance(PostUserResDto, user);
   }

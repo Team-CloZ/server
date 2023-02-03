@@ -1,10 +1,16 @@
-import { Post } from '@/entity';
-import { PostRepository, UserRepository } from '@/repository';
+import { Post, PostLike } from '@/entity';
+import {
+  PostLikeRepository,
+  PostRepository,
+  UserRepository,
+} from '@/repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   GetPostsResQueryDto,
-  PostPostReqDto,
+  PostPostReqBodyDto,
   GetPostByIdReqParamDto,
+  CheckLikeByPostIdAndUserIdReqQueryDto,
+  PostLikeByPostIdReqBodyDto,
 } from './dto';
 
 @Injectable()
@@ -12,31 +18,32 @@ export class PostService {
   constructor(
     private readonly postRepository: PostRepository,
     private readonly userRepository: UserRepository,
+    private readonly postLikeRepository: PostLikeRepository,
   ) {}
 
-  async postPost(postPostReqDto: PostPostReqDto): Promise<Post> {
+  async postPost(postPostReqBodyDto: PostPostReqBodyDto): Promise<Post> {
     try {
       const user = await this.userRepository.selectUserById(
-        postPostReqDto.userId,
+        postPostReqBodyDto.userId,
       );
       if (!user) {
         throw new NotFoundException(
-          `${postPostReqDto.userId}번 유저가 존재하지 않습니다.`,
+          `${postPostReqBodyDto.userId}번 유저가 존재하지 않습니다.`,
         );
       }
 
-      if (postPostReqDto.parentId) {
+      if (postPostReqBodyDto.parentId) {
         const parent = await this.postRepository.selectPostById(
-          postPostReqDto.parentId,
+          postPostReqBodyDto.parentId,
         );
         if (!parent) {
           throw new NotFoundException(
-            `${postPostReqDto.parentId}번 게시글이 존재하지 않습니다.`,
+            `${postPostReqBodyDto.parentId}번 게시글이 존재하지 않습니다.`,
           );
         }
       }
 
-      const newPost = new Post(postPostReqDto);
+      const newPost = new Post(postPostReqBodyDto);
 
       const id = await this.postRepository.insertPost(newPost);
 
@@ -119,6 +126,87 @@ export class PostService {
       );
 
       return children;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async postLikeByPostId(
+    getPostByIdReqParamDto: GetPostByIdReqParamDto,
+    postLikeByPostIdReqBodyDto: PostLikeByPostIdReqBodyDto,
+  ): Promise<void> {
+    try {
+      const isLiked = await this.checkLikeByPostIdAndUserId(
+        getPostByIdReqParamDto,
+        postLikeByPostIdReqBodyDto,
+      );
+
+      if (isLiked) {
+        const affectedRows =
+          await this.postLikeRepository.deletePostLikeByPostIdAndUserId(
+            getPostByIdReqParamDto.id,
+            postLikeByPostIdReqBodyDto.userId,
+          );
+
+        if (affectedRows === 1) {
+          await this.postRepository.decrementLikeCountByPostId(
+            getPostByIdReqParamDto.id,
+          );
+        }
+      } else {
+        const postLike = new PostLike({
+          userId: postLikeByPostIdReqBodyDto.userId,
+          postId: getPostByIdReqParamDto.id,
+        });
+
+        const id = await this.postLikeRepository.insertPostLike(postLike);
+
+        if (id) {
+          await this.postRepository.incrementLikeCountByPostId(
+            getPostByIdReqParamDto.id,
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async checkLikeByPostIdAndUserId(
+    getPostByIdReqParamDto: GetPostByIdReqParamDto,
+    checkLikeByPostIdAndUserIdReqQueryDto: CheckLikeByPostIdAndUserIdReqQueryDto,
+  ): Promise<boolean> {
+    try {
+      const post = await this.postRepository.selectPostById(
+        getPostByIdReqParamDto.id,
+      );
+      if (!post) {
+        throw new NotFoundException(
+          `${getPostByIdReqParamDto.id}번 게시글이 존재하지 않습니다.`,
+        );
+      }
+
+      const user = await this.userRepository.selectUserById(
+        checkLikeByPostIdAndUserIdReqQueryDto.userId,
+      );
+      if (!user) {
+        throw new NotFoundException(
+          `${checkLikeByPostIdAndUserIdReqQueryDto.userId}번 유저가 존재하지 않습니다.`,
+        );
+      }
+
+      const postLike =
+        await this.postLikeRepository.selectPostLikeByPostIdAndUserId(
+          getPostByIdReqParamDto.id,
+          checkLikeByPostIdAndUserIdReqQueryDto.userId,
+        );
+
+      if (postLike) {
+        return true;
+      }
+      return false;
     } catch (error) {
       console.log(error);
       throw error;

@@ -60,12 +60,12 @@ export class Post {
 
   @ApiProperty()
   @Property({ persist: false })
-  @IsNumber()
+  @Min(1)
   readonly userId!: number;
 
   @ApiProperty({ required: false })
   @Property({ persist: false })
-  @IsNumber()
+  @Min(1)
   readonly parentId?: number;
 
   // @OneToMany(() => Post, (post) => post.parent)

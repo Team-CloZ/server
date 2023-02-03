@@ -12,9 +12,13 @@ import {
   GetPostByIdResUserDto,
   GetPostsResElementDto,
   GetPostsResQueryDto,
-  PostPostReqDto,
+  PostPostReqBodyDto,
   GetPostByIdReqParamDto,
   PostPostResDto,
+  CheckLikeByPostIdAndUserIdResDto,
+  CheckLikeByPostIdAndUserIdReqQueryDto,
+  PostLikeByPostIdResDto,
+  PostLikeByPostIdReqBodyDto,
 } from './dto';
 import { PostService } from './post.service';
 
@@ -27,9 +31,9 @@ export class PostController {
   @ApiCreatedResponse({ type: PostPostResDto })
   @Post()
   async postPost(
-    @Body() postPostReqDto: PostPostReqDto,
+    @Body() postPostReqBodyDto: PostPostReqBodyDto,
   ): Promise<PostPostResDto> {
-    const post = await this.postService.postPost(postPostReqDto);
+    const post = await this.postService.postPost(postPostReqBodyDto);
 
     return plainToInstance(PostPostResDto, post);
   }
@@ -71,5 +75,35 @@ export class PostController {
     );
 
     return plainToInstance(GetPostsResElementDto, posts);
+  }
+
+  @ApiOperation({ summary: '게시글 좋아요 클릭' })
+  @ApiCreatedResponse()
+  @Post(':id/like')
+  async postLikeByPostId(
+    @Param() getPostByIdReqParamDto: GetPostByIdReqParamDto,
+    @Body() postLikeByPostIdReqBodyDto: PostLikeByPostIdReqBodyDto,
+  ): Promise<void> {
+    await this.postService.postLikeByPostId(
+      getPostByIdReqParamDto,
+      postLikeByPostIdReqBodyDto,
+    );
+  }
+
+  @ApiOperation({ summary: '게시글 좋아요 확인' })
+  @ApiOkResponse({ type: CheckLikeByPostIdAndUserIdResDto })
+  @Get(':id/like')
+  async checkLikeByPostIdAndUserId(
+    @Param()
+    getPostByIdReqParamDto: GetPostByIdReqParamDto,
+    @Query()
+    checkLikeByPostIdAndUserIdReqQueryDto: CheckLikeByPostIdAndUserIdReqQueryDto,
+  ): Promise<CheckLikeByPostIdAndUserIdResDto> {
+    const isLiked = await this.postService.checkLikeByPostIdAndUserId(
+      getPostByIdReqParamDto,
+      checkLikeByPostIdAndUserIdReqQueryDto,
+    );
+
+    return plainToInstance(CheckLikeByPostIdAndUserIdResDto, { isLiked });
   }
 }

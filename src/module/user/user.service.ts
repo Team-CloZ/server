@@ -1,15 +1,15 @@
 import { User } from '@/entity';
 import { UserRepository } from '@/repository';
 import { Injectable } from '@nestjs/common';
-import { GetUserReqParamsDto, PostUserReqDto } from './dto';
+import { GetUserReqParamsDto, PostUserReqBodyDto } from './dto';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async postUser(postUserReqDto: PostUserReqDto): Promise<User> {
+  async postUser(postUserReqBodyDto: PostUserReqBodyDto): Promise<User> {
     try {
-      const newUser = new User(postUserReqDto);
+      const newUser = new User(postUserReqBodyDto);
 
       const id = await this.userRepository.insertUser(newUser);
 
