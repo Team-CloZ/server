@@ -1,5 +1,5 @@
 import { UserRepository } from '@/repository';
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsString, Min } from 'class-validator';
@@ -13,6 +13,7 @@ export class User {
 
   @ApiProperty()
   @Property()
+  @Unique()
   @IsString()
   readonly name!: string;
 

@@ -17,4 +17,12 @@ export class UserRepository extends EntityRepository<User> {
 
     return user;
   }
+
+  async selectUserByName(name: string): Promise<User> {
+    const qb = this.qb().select('*').where({ name });
+
+    const [user] = await qb.execute();
+
+    return user;
+  }
 }

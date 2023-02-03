@@ -12,13 +12,20 @@ export class UserService {
 
   async postUser(postUserReqBodyDto: PostUserReqBodyDto): Promise<User> {
     try {
+      const user = await this.userRepository.selectUserByName(
+        postUserReqBodyDto.name,
+      );
+      if (user) {
+        return user;
+      }
+
       const newUser = new User(postUserReqBodyDto);
 
       const id = await this.userRepository.insertUser(newUser);
 
-      const user = await this.userRepository.selectUserById(id);
+      const createdUser = await this.userRepository.selectUserById(id);
 
-      return user;
+      return createdUser;
     } catch (error) {
       console.log(error);
       throw error;
