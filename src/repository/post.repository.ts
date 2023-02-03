@@ -12,12 +12,13 @@ export class PostRepository extends EntityRepository<Post> {
     return insertId;
   }
 
+  // 불변하게 수정
   async selectPostById(id: number): Promise<Post> {
-    const qb = this.qb().select('*').where(id);
+    const qb1 = this.qb().select('*').where(id);
 
-    const [user] = await qb.execute();
+    const [post] = await qb1.execute();
 
-    return user;
+    return post;
   }
 
   async selectPosts(getPostsResQueryDto: GetPostsResQueryDto): Promise<Post[]> {

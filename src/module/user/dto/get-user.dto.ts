@@ -2,7 +2,7 @@ import { User } from '@/entity';
 import { PickType } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-export class GetUserParamsDto extends PickType(User, ['id']) {}
+export class GetUserReqParamsDto extends PickType(User, ['id']) {}
 
 @Exclude()
 export class GetUserResDto extends PickType(User, ['id', 'name']) {

@@ -1,7 +1,7 @@
 import { User } from '@/entity';
 import { UserRepository } from '@/repository';
 import { Injectable } from '@nestjs/common';
-import { GetUserParamsDto, PostUserReqDto } from './dto';
+import { GetUserReqParamsDto, PostUserReqDto } from './dto';
 
 @Injectable()
 export class UserService {
@@ -22,7 +22,7 @@ export class UserService {
     }
   }
 
-  async getUser(getUserParamsDto: GetUserParamsDto): Promise<User> {
+  async getUser(getUserParamsDto: GetUserReqParamsDto): Promise<User> {
     try {
       const user = await this.userRepository.selectUserById(
         getUserParamsDto.id,

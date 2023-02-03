@@ -7,7 +7,7 @@ import {
 } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import {
-  GetUserParamsDto,
+  GetUserReqParamsDto,
   GetUserResDto,
   PostUserReqDto,
   PostUserResDto,
@@ -34,7 +34,7 @@ export class UserController {
   @ApiOkResponse({ type: GetUserResDto })
   @Get(':id')
   async getUser(
-    @Param() getUserParamsDto: GetUserParamsDto,
+    @Param() getUserParamsDto: GetUserReqParamsDto,
   ): Promise<GetUserResDto> {
     const user = await this.userService.getUser(getUserParamsDto);
 

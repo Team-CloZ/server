@@ -1,7 +1,13 @@
 import { Post } from '@/entity';
 import { PostRepository, UserRepository } from '@/repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { GetPostsResQueryDto, PostPostReqDto } from './dto';
+import { plainToInstance } from 'class-transformer';
+import {
+  GetPostResUserDto,
+  GetPostsResQueryDto,
+  PostPostReqDto,
+  PostPostReqParamDto,
+} from './dto';
 
 @Injectable()
 export class PostService {
@@ -10,7 +16,7 @@ export class PostService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async PostPost(postPostReqDto: PostPostReqDto): Promise<Post> {
+  async postPost(postPostReqDto: PostPostReqDto): Promise<Post> {
     try {
       const user = await this.userRepository.selectUserById(
         postPostReqDto.userId,
@@ -45,7 +51,7 @@ export class PostService {
     }
   }
 
-  async GetPosts(getPostsResQueryDto: GetPostsResQueryDto): Promise<Post[]> {
+  async getPosts(getPostsResQueryDto: GetPostsResQueryDto): Promise<Post[]> {
     try {
       if (getPostsResQueryDto.userId) {
         const user = await this.userRepository.selectUserById(
@@ -61,6 +67,34 @@ export class PostService {
       const posts = await this.postRepository.selectPosts(getPostsResQueryDto);
 
       return posts;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async getPostById(postPostReqParamDto: PostPostReqParamDto): Promise<Post> {
+    try {
+      const post = await this.postRepository.selectPostById(
+        postPostReqParamDto.id,
+      );
+      if (!post) {
+        throw new NotFoundException(
+          `${postPostReqParamDto.id}번 게시글이 존재하지 않습니다.`,
+        );
+      }
+
+      const user = await this.userRepository.selectUserById(post.userId);
+
+      const parent =
+        post.parentId &&
+        (await this.postRepository.selectPostById(post.parentId));
+
+      return {
+        ...post,
+        user,
+        parent,
+      };
     } catch (error) {
       console.log(error);
       throw error;

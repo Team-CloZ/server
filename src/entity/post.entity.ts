@@ -1,12 +1,5 @@
 import { PostRepository } from '@/repository';
-import {
-  Collection,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsNumber, IsString, Min } from 'class-validator';
