@@ -41,7 +41,7 @@ export class PostRepository extends EntityRepository<Post> {
     }
 
     switch (getPostsResQueryDto.sortBy) {
-      case SortBy.LIKE:
+      case SortBy.POPULAR:
         qb.orderBy({ likeCount: 'DESC', id: 'DESC' });
         break;
       default:
