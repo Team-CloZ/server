@@ -20,6 +20,16 @@ export class AiController {
   async createImages(
     @Body() createImagesReqBodyDto: CreateImagesReqBodyDto,
   ): Promise<CreateImagesResDto> {
+    return {
+      images: [
+        Date.now() + '_1.jpg',
+        Date.now() + '_2.jpg',
+        Date.now() + '_3.jpg',
+        Date.now() + '_4.jpg',
+        Date.now() + '_5.jpg',
+        Date.now() + '_6.jpg',
+      ],
+    };
     return fetch(`${process.env.AI_HOST}/v2/generate`, {
       method: 'POST',
       headers: {
@@ -40,6 +50,9 @@ export class AiController {
   async editImage(
     @Body() editImageReqBodyDto: EditImageReqBodyDto,
   ): Promise<CreateImagesResDto> {
+    return {
+      images: [new Date() + '_7.jpg'],
+    };
     return fetch(`${process.env.AI_HOST}/v2/edit`, {
       method: 'POST',
       headers: {

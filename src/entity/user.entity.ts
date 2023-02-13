@@ -17,6 +17,16 @@ export class User {
   @IsString()
   readonly name!: string;
 
+  @ApiProperty()
+  @Property({ hidden: true })
+  @IsString()
+  readonly password!: string;
+
+  @ApiProperty()
+  @Property()
+  @IsString()
+  readonly image: string = '';
+
   @ApiProperty({ type: Date })
   @Property()
   readonly createdAt = new Date();

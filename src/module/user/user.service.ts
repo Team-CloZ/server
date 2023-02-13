@@ -1,7 +1,7 @@
 import { User } from '@/entity';
 import { PostRepository, UserRepository } from '@/repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { GetUserReqParamsDto, PostUserReqBodyDto } from './dto';
+import { GetUserReqParamsDto } from './dto';
 
 @Injectable()
 export class UserService {
@@ -9,28 +9,6 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly postRepository: PostRepository,
   ) {}
-
-  async postUser(postUserReqBodyDto: PostUserReqBodyDto): Promise<User> {
-    try {
-      const user = await this.userRepository.selectUserByName(
-        postUserReqBodyDto.name,
-      );
-      if (user) {
-        return user;
-      }
-
-      const newUser = new User(postUserReqBodyDto);
-
-      const id = await this.userRepository.insertUser(newUser);
-
-      const createdUser = await this.userRepository.selectUserById(id);
-
-      return createdUser;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  }
 
   async getUser(getUserReqParamsDto: GetUserReqParamsDto): Promise<User> {
     try {

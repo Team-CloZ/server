@@ -8,9 +8,16 @@ import { UserModule } from './module/user/user.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { PostModule } from './module/post/post.module';
 import { AiModule } from './module/ai/ai.module';
+import { AuthModule } from './module/auth/auth.module';
 
 @Module({
-  imports: [MikroOrmModule.forRoot(), UserModule, PostModule, AiModule],
+  imports: [
+    MikroOrmModule.forRoot(),
+    UserModule,
+    PostModule,
+    AiModule,
+    AuthModule,
+  ],
   providers: [
     {
       provide: APP_INTERCEPTOR,
