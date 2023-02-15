@@ -1,4 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -8,6 +16,8 @@ import {
 import { plainToInstance } from 'class-transformer';
 import { AuthService } from './auth.service';
 import {
+  CheckNameReqQeuryDto,
+  CheckNameResDto,
   SignInReqBodyDto,
   SignInResDto,
   SignUpReqBodyDto,
@@ -32,6 +42,7 @@ export class AuthController {
 
   @ApiOperation({ summary: '로그인' })
   @ApiOkResponse({ type: SignInResDto })
+  @HttpCode(200)
   @Post('sign-in')
   async signIn(
     @Body() signInReqBodyDto: SignInReqBodyDto,
@@ -39,5 +50,16 @@ export class AuthController {
     const user = await this.authService.signIn(signInReqBodyDto);
 
     return plainToInstance(SignInResDto, user);
+  }
+
+  @ApiOperation({ summary: 'name 확인' })
+  @ApiOkResponse({ type: CheckNameResDto })
+  @Get('check-name')
+  async checkName(
+    @Query() checkNameReqQueryDto: CheckNameReqQeuryDto,
+  ): Promise<CheckNameResDto> {
+    const isExist = await this.authService.checkName(checkNameReqQueryDto);
+
+    return plainToInstance(CheckNameResDto, { isExist });
   }
 }

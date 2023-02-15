@@ -4,7 +4,11 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { SignInReqBodyDto, SignUpReqBodyDto } from './dto';
+import {
+  CheckNameReqQeuryDto,
+  SignInReqBodyDto,
+  SignUpReqBodyDto,
+} from './dto';
 import { User } from '@/entity';
 import { UserRepository } from '@/repository';
 
@@ -62,6 +66,24 @@ export class AuthService {
       }
 
       return user;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async checkName(
+    checkNameReqQueryDto: CheckNameReqQeuryDto,
+  ): Promise<boolean> {
+    try {
+      const user = await this.userRepository.selectUserByName(
+        checkNameReqQueryDto.name,
+      );
+      if (user) {
+        return true;
+      }
+
+      return false;
     } catch (error) {
       console.log(error);
       throw error;
