@@ -39,9 +39,9 @@ export class GetPostsResElementDto extends PickType(Post, [
   'color',
   'desc',
   'caption',
-  'parentId',
-  'userId',
-  'likeCount',
+  // 'parentId',
+  // 'userId',
+  // 'likeCount',
 ]) {
   @Expose() readonly id!: number;
   @Expose() readonly imageUrl!: string;
@@ -49,7 +49,7 @@ export class GetPostsResElementDto extends PickType(Post, [
   @Expose() readonly color!: string;
   @Expose() readonly desc!: string;
   @Expose() readonly caption?: string;
-  @Expose() readonly parentId?: number;
-  @Expose() readonly userId!: number;
-  @Expose() readonly likeCount!: number;
+  // @Expose() readonly parentId?: number;
+  // @Expose() readonly userId!: number;
+  // @Expose() readonly likeCount!: number;
 }

@@ -27,9 +27,14 @@ export class GetPostByIdResParentDto extends PickType(Post, [
 }
 
 @Exclude()
-export class GetPostByIdResUserDto extends PickType(User, ['id', 'name']) {
+export class GetPostByIdResUserDto extends PickType(User, [
+  'id',
+  'name',
+  'image',
+]) {
   @Expose() readonly id!: number;
   @Expose() readonly name!: string;
+  @Expose() readonly image!: string;
 }
 
 @Exclude()
