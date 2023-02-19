@@ -48,7 +48,7 @@ export class PostRepository extends EntityRepository<Post> {
         qb.orderBy({ id: 'DESC' });
     }
 
-    qb.limit(10, (getPostsResQueryDto.page - 1) * 10);
+    qb.limit(100, (getPostsResQueryDto.page - 1) * 100);
 
     const posts = await qb.execute();
 
