@@ -39,6 +39,7 @@ export class GetPostsResElementDto extends PickType(Post, [
   'color',
   'desc',
   'caption',
+  'likeCount',
   // 'parentId',
   // 'userId',
   // 'likeCount',
@@ -49,6 +50,7 @@ export class GetPostsResElementDto extends PickType(Post, [
   @Expose() readonly color!: string;
   @Expose() readonly desc!: string;
   @Expose() readonly caption?: string;
+  @Expose() readonly likeCount!: number;
   // @Expose() readonly parentId?: number;
   // @Expose() readonly userId!: number;
   // @Expose() readonly likeCount!: number;
