@@ -13,7 +13,7 @@ export class UserRepository extends EntityRepository<User> {
   async selectUserById(id: number): Promise<User> {
     const qb = this.qb().select('*').where(id);
 
-    const [user] = await qb.execute();
+    const [user] = await qb.cache().execute();
 
     return user;
   }
@@ -21,7 +21,7 @@ export class UserRepository extends EntityRepository<User> {
   async selectUserByName(name: string): Promise<User> {
     const qb = this.qb().select('*').where({ name });
 
-    const [user] = await qb.execute();
+    const [user] = await qb.cache().execute();
 
     return user;
   }

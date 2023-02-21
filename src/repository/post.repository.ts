@@ -16,7 +16,7 @@ export class PostRepository extends EntityRepository<Post> {
   async selectPostById(id: number): Promise<Post> {
     const qb1 = this.qb().select('*').where(id);
 
-    const [post] = await qb1.execute();
+    const [post] = await qb1.cache().execute();
 
     return post;
   }
@@ -50,7 +50,7 @@ export class PostRepository extends EntityRepository<Post> {
 
     qb.limit(100, (getPostsResQueryDto.page - 1) * 100);
 
-    const posts = await qb.execute();
+    const posts = await qb.cache().execute();
 
     return posts;
   }
@@ -61,7 +61,7 @@ export class PostRepository extends EntityRepository<Post> {
       .where({ parentId: postId })
       .orderBy({ id: 'DESC' });
 
-    const posts = await qb.execute();
+    const posts = await qb.cache().execute();
 
     return posts;
   }
