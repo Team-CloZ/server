@@ -44,6 +44,9 @@ export class GetPostByIdResDto extends PickType(Post, [
   'title',
   'color',
   'desc',
+  'tlTitle',
+  'tlColor',
+  'tlDesc',
   'caption',
   'parentId',
   'userId',
@@ -54,6 +57,9 @@ export class GetPostByIdResDto extends PickType(Post, [
   @Expose() readonly title!: string;
   @Expose() readonly color!: string;
   @Expose() readonly desc!: string;
+  @Expose() readonly tlTitle!: string;
+  @Expose() readonly tlColor!: string;
+  @Expose() readonly tlDesc!: string;
   @Expose() readonly caption?: string;
   @Expose() readonly parentId?: number;
   @Expose() readonly userId!: number;

@@ -9,6 +9,7 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { PostModule } from './module/post/post.module';
 import { AiModule } from './module/ai/ai.module';
 import { AuthModule } from './module/auth/auth.module';
+import { PapagoModule } from './module/papago/papago.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from './module/auth/auth.module';
     PostModule,
     AiModule,
     AuthModule,
+    PapagoModule,
   ],
   providers: [
     {

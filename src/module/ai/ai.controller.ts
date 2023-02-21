@@ -20,19 +20,20 @@ export class AiController {
   async createImages(
     @Body() createImagesReqBodyDto: CreateImagesReqBodyDto,
   ): Promise<CreateImagesResDto> {
-    // 2초 딜레이
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return {
-      images: [
-        '20230129065410.jpg',
-        '20230129065410.jpg',
-        '20230129065410.jpg',
-        '20230129065410.jpg',
-        '20230129065410.jpg',
-        '20230129065410.jpg',
-      ],
-    };
+    // return {
+    //   images: [
+    //     '20230129065410.jpg',
+    //     '20230129065410.jpg',
+    //     '20230129065410.jpg',
+    //     '20230129065410.jpg',
+    //     '20230129065410.jpg',
+    //     '20230129065410.jpg',
+    //   ],
+    // };
+    console.log(createImagesReqBodyDto);
+
     return fetch(`${process.env.AI_HOST}/v2/generate`, {
       method: 'POST',
       headers: {
@@ -53,11 +54,13 @@ export class AiController {
   async editImage(
     @Body() editImageReqBodyDto: EditImageReqBodyDto,
   ): Promise<CreateImagesResDto> {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return {
-      images: ['20230129065410.jpg'],
-    };
+    // return {
+    //   images: ['20230129065410.jpg'],
+    // };
+    console.log(editImageReqBodyDto);
+
     return fetch(`${process.env.AI_HOST}/v2/edit`, {
       method: 'POST',
       headers: {

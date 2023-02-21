@@ -2,7 +2,7 @@ import { PostRepository } from '@/repository';
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsNumber, IsString, Min } from 'class-validator';
+import { IsString, Min } from 'class-validator';
 import { User } from '.';
 
 @Entity({ customRepository: () => PostRepository })
@@ -68,6 +68,18 @@ export class Post {
   @Min(1)
   readonly parentId?: number;
 
-  // @OneToMany(() => Post, (post) => post.parent)
-  // children = new Collection<Post>(this);
+  @ApiProperty()
+  @Property()
+  @IsString()
+  readonly tlTitle!: string;
+
+  @ApiProperty()
+  @Property()
+  @IsString()
+  readonly tlColor!: string;
+
+  @ApiProperty()
+  @Property()
+  @IsString()
+  readonly tlDesc!: string;
 }
