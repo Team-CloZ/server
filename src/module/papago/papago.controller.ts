@@ -15,12 +15,12 @@ export class PapagoController {
   @HttpCode(200)
   @Post('is-ko')
   async isKo(@Body() isKoReqBodyDto: IsKoReqBodyDto): Promise<IsKoResDto> {
-    return fetch(`${process.env.PAPAGO_HOST}/v1/papago/detectLangs`, {
+    return fetch(`${process.env.PAPAGO_HOST}/langs/v1/dect`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'X-Naver-Client-Id': process.env.PAPAGO_ID,
-        'X-Naver-Client-Secret': process.env.PAPAGO_SECRET,
+        'X-NCP-APIGW-API-KEY-ID': process.env.PAPAGO_ID,
+        'X-NCP-APIGW-API-KEY': process.env.PAPAGO_SECRET,
       },
       body: `query=${isKoReqBodyDto.text}`,
     })
@@ -41,12 +41,12 @@ export class PapagoController {
   async koToEn(
     @Body() koToEnReqBodyDto: KoToEnReqBodyDto,
   ): Promise<KoToEnResDto> {
-    return fetch(`${process.env.PAPAGO_HOST}/v1/papago/n2mt`, {
+    return fetch(`${process.env.PAPAGO_HOST}/nmt/v1/translation`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'X-Naver-Client-Id': process.env.PAPAGO_ID,
-        'X-Naver-Client-Secret': process.env.PAPAGO_SECRET,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-NCP-APIGW-API-KEY-ID': process.env.PAPAGO_ID,
+        'X-NCP-APIGW-API-KEY': process.env.PAPAGO_SECRET,
       },
       body: `source=ko&target=en&text=${koToEnReqBodyDto.text}`,
     })
