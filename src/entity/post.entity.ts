@@ -82,4 +82,7 @@ export class Post {
   @Property()
   @IsString()
   readonly tlDesc!: string;
+
+  @Property({ hidden: true })
+  readonly isDeleted: boolean = false;
 }

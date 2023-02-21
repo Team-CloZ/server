@@ -22,7 +22,7 @@ export class PostRepository extends EntityRepository<Post> {
   }
 
   async selectPosts(getPostsResQueryDto: GetPostsResQueryDto): Promise<Post[]> {
-    const qb = this.qb().select('*');
+    const qb = this.qb().select('*').where({ isDeleted: false });
 
     if (getPostsResQueryDto.search) {
       qb.andWhere({
@@ -58,7 +58,7 @@ export class PostRepository extends EntityRepository<Post> {
   async selectChildrenByPostId(postId: number): Promise<Post[]> {
     const qb = this.qb()
       .select('*')
-      .where({ parentId: postId })
+      .where({ parentId: postId, isDeleted: false })
       .orderBy({ id: 'DESC' });
 
     const posts = await qb.cache().execute();
