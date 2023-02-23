@@ -34,7 +34,7 @@ export class PostController {
   ): Promise<PostPostResDto> {
     const post = await this.postService.postPost(postPostReqBodyDto);
 
-    console.log(`게시글 생성: ${post.id}(userId: ${post.userId})`);
+    console.log(`게시글 생성: ${post.id}(userId: ${post.userId})`, post);
 
     return plainToInstance(PostPostResDto, post);
   }

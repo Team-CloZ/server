@@ -20,6 +20,7 @@ async function bootstrap() {
   };
   SwaggerModule.setup('docs', app, document, options);
 
-  await app.listen(3000);
+  const server = await app.listen(3000);
+  server.setTimeout(1000 * 60 * 10);
 }
 bootstrap();
