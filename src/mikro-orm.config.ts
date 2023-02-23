@@ -13,7 +13,7 @@ const config: Options = {
   port: Number(process.env.DB_PORT),
   password: process.env.DB_PASSWORD,
   user: process.env.DB_USER,
-  debug: true,
+  debug: false,
 };
 
 export default config;

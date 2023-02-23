@@ -37,6 +37,8 @@ export class AuthController {
   ): Promise<SignUpResDto> {
     const user = await this.authService.signUp(signUpReqBodyDto);
 
+    console.log(`회원가입: ${user.name}(${user.id})`);
+
     return plainToInstance(SignUpResDto, user);
   }
 
@@ -48,6 +50,8 @@ export class AuthController {
     @Body() signInReqBodyDto: SignInReqBodyDto,
   ): Promise<SignInResDto> {
     const user = await this.authService.signIn(signInReqBodyDto);
+
+    console.log(`로그인: ${user.name}(${user.id})`);
 
     return plainToInstance(SignInResDto, user);
   }

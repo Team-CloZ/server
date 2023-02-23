@@ -52,6 +52,10 @@ export class PapagoController {
     })
       .then((res) => res.json())
       .then((data) => {
+        if (data.message === undefined) {
+          console.log(`파파고에러(입력값: ${koToEnReqBodyDto})`);
+          throw new Error('Papago API Error');
+        }
         return { translatedText: data.message.result.translatedText };
       })
       .catch((error) => {
